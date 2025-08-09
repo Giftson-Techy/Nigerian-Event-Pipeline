@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Country Selection Bar -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card bg-primary text-white">
+            <div class="card-body py-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fas fa-globe me-2"></i>
+                        <strong>Current Search Region: <span id="current-country">{{ current_country or 'Nigeria' }}</span></strong>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="countryDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-map-marker-alt me-1"></i>
+                            Change Country
+                        </button>
+                        <ul class="dropdown-menu" id="country-list">
+                            <li><a class="dropdown-item" href="#" onclick="setCountry('Nigeria')">🇳🇬 Nigeria</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setCountry('United States')">🇺🇸 United States</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setCountry('United Kingdom')">🇬🇧 United Kingdom</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setCountry('Canada')">🇨🇦 Canada</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setCountry('Australia')">🇦🇺 Australia</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/countries"><i class="fas fa-cog me-1"></i> Country Settings</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-calendar-alt fa-2x mb-2"></i>
+                <h3>{{ total_events }}</h3>
+                <p class="mb-0">Total Events</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-rss fa-2x mb-2"></i>
+                <h3>{{ sources_summary|length }}</h3>
+                <p class="mb-0">Data Sources</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-clock fa-2x mb-2"></i>
+                <h3>15min</h3>
+                <p class="mb-0">Update Frequency</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-link fa-2x mb-2"></i>
+                <h3>Live</h3>
+                <p class="mb-0">Clickable Links</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sources Summary -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Sources Summary
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for source in sources_summary %}
+                    <div class="col-md-4 mb-2">
+                        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded">
+                            <span class="fw-bold">{{ source.source }}</span>
+                            <span class="badge bg-primary">{{ source.count }} events</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Events -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-calendar-plus me-2"></i>
+                    Recent Events
+                </h5>
+                <button class="btn btn-sm btn-outline-primary" onclick="location.reload()">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                {% if events %}
+                <div class="row">
+                    {% for event in events %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card event-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-info source-badge">{{ event.source }}</span>
+                                    {% if event.category %}
+                                    <span class="badge bg-secondary source-badge">{{ event.category }}</span>
+                                    {% endif %}
+                                </div>
+                                
+                                <h6 class="card-title">
+                                    <a href="{{ event.url }}" target="_blank" class="text-decoration-none">
+                                        {{ event.title[:80] }}{% if event.title|length > 80 %}...{% endif %}
+                                    </a>
+                                </h6>
+                                
+                                {% if event.description %}
+                                <p class="card-text text-muted small">
+                                    {{ event.description[:120] }}{% if event.description|length > 120 %}...{% endif %}
+                                </p>
+                                {% endif %}
+                                
+                                <div class="small text-muted mb-2">
+                                    {% if event.location %}
+                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                    {{ event.location }}
+                                    <br>
+                                    {% endif %}
+                                    
+                                    {% if event.event_date %}
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {{ event.event_date }}
+                                    <br>
+                                    {% endif %}
+                                    
+                                    {% if event.organizer %}
+                                    <i class="fas fa-user me-1"></i>
+                                    {{ event.organizer }}
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="{{ event.url }}" target="_blank" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        View Event
+                                    </a>
+                                    {% if event.price %}
+                                    <span class="badge bg-success">{{ event.price }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No events found</h5>
+                    <p class="text-muted">The pipeline will automatically discover events every 15 minutes.</p>
+                    <button class="btn btn-primary" onclick="location.reload()">
+                        <i class="fas fa-sync-alt me-1"></i>
+                        Check for Updates
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">
+                    <i class="fas fa-bolt me-2"></i>
+                    Quick Actions
+                </h6>
+                <div class="btn-group" role="group">
+                    <a href="/events/Twitter" class="btn btn-outline-primary btn-sm">
+                        <i class="fab fa-twitter me-1"></i>
+                        Twitter Events
+                    </a>
+                    <a href="/events/Facebook" class="btn btn-outline-primary btn-sm">
+                        <i class="fab fa-facebook me-1"></i>
+                        Facebook Events
+                    </a>
+                    <a href="/events/Eventbrite" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-ticket-alt me-1"></i>
+                        Eventbrite
+                    </a>
+                    <a href="/events/Google Search" class="btn btn-outline-primary btn-sm">
+                        <i class="fab fa-google me-1"></i>
+                        Google Search
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Country selection function
+function setCountry(country) {
+    fetch('/api/set-country', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({country: country})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('current-country').textContent = country;
+            
+            // Show success message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show';
+            alertDiv.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                Country changed to ${country}. Next pipeline run will search for events in this region.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.querySelector('.container-fluid').insertBefore(alertDiv, document.querySelector('.row'));
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to change country');
+    });
+}
+
+// Real-time updates every 5 minutes for dashboard
+setInterval(() => {
+    fetch('/api/stats')
+        .then(response => response.json())
+        .then(data => {
+            // Update total events count if it changes
+            const totalEventsElement = document.querySelector('.stats-card h3');
+            if (totalEventsElement && totalEventsElement.textContent !== data.total_events.toString()) {
+                location.reload(); // Reload if new events are found
+            }
+        })
+        .catch(error => console.log('Auto-update check failed:', error));
+}, 5 * 60 * 1000);
+
+// Load current country on page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/countries')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('current-country').textContent = data.current_country;
+        })
+        .catch(error => console.log('Failed to load country info:', error));
+});
+</script>
+{% endblock %}

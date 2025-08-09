@@ -1,0 +1,40 @@
+🔑 YOUR API KEYS FOR RENDER DEPLOYMENT
+=====================================
+
+Copy these EXACT values to Render environment variables:
+
+📋 ENVIRONMENT VARIABLES TO ADD IN RENDER:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Variable Name: GOOGLE_API_KEY
+Value: AIzaSyCrAbL3wuKwejD3dKuBoL7q3U6oOGEDEDc
+
+Variable Name: GOOGLE_CSE_ID
+Value: 979f891fa78df44b8
+
+Variable Name: PORT
+Value: 10000
+
+Variable Name: FLASK_HOST
+Value: 0.0.0.0
+
+🎯 HOW TO ADD THESE IN RENDER:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. After creating your web service in Render
+2. Go to "Environment" tab
+3. Click "Add Environment Variable"
+4. Copy each Variable Name and Value exactly as shown above
+5. Click "Save Changes"
+
+✅ DEPLOYMENT READY!
+━━━━━━━━━━━━━━━━━━━━
+
+Your Nigerian Event Pipeline will use:
+🔍 Google Search API for event discovery
+🎯 Nigerian-focused queries  
+📱 Mobile-optimized interface
+💾 Smart quota management
+⚡ Fast caching system
+
+🌍 RESULT: FREE 24/7 global access to your Nigerian events dashboard!

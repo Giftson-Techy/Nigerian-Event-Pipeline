@@ -1,0 +1,63 @@
+🔧 QUICK FIX - Missing requirements.txt on GitHub
+===============================================
+
+PROBLEM: requirements.txt file wasn't uploaded to GitHub properly
+
+🎯 SOLUTION - RE-UPLOAD MISSING FILES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OPTION 1: Add via GitHub Web Interface (EASIEST)
+───────────────────────────────────────────────
+
+1. Go to your GitHub repository:
+   https://github.com/Giftson-Techy/Nigerian-Event-Pipeline
+
+2. Click "Add file" → "Create new file"
+
+3. File name: requirements.txt
+
+4. Copy and paste this content:
+   ┌─────────────────────────────────────┐
+   │ flask==2.3.3                        │
+   │ requests==2.31.0                    │
+   │ beautifulsoup4==4.12.2              │
+   │ schedule==1.2.0                     │
+   │ python-dotenv==1.0.0                │
+   │ google-api-python-client==2.97.0    │
+   │ lxml==4.9.3                         │
+   │ feedparser==6.0.10                  │
+   └─────────────────────────────────────┘
+
+5. Commit message: "Add requirements.txt for deployment"
+
+6. Click "Commit new file"
+
+OPTION 2: Upload File (ALTERNATIVE)
+──────────────────────────────────
+
+1. Go to your GitHub repository
+2. Click "Add file" → "Upload files"  
+3. Drag requirements.txt from your Event-Pipeline folder
+4. Commit changes
+
+🔄 AFTER FIXING:
+━━━━━━━━━━━━━━━━
+
+1. ✅ Verify requirements.txt appears in your GitHub repo
+2. 🔄 Go back to Render and click "Manual Deploy" 
+   (or Render will auto-deploy if you have auto-deploy enabled)
+3. 🚀 Deployment should work now!
+
+🎯 ALSO CHECK THESE FILES ARE ON GITHUB:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ main.py
+✅ requirements.txt (fixing now)
+✅ Procfile  
+✅ runtime.txt
+✅ scrapers/ folder
+✅ web/ folder
+✅ database/ folder
+✅ utils/ folder
+
+🚀 QUICK FIX: Go add requirements.txt to GitHub now!

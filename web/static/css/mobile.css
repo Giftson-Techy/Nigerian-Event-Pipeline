@@ -1,0 +1,20 @@
+
+/* Mobile-Optimized Styles */
+@media (max-width: 768px) {
+    .container { padding: 10px; }
+    .event-card { 
+        margin-bottom: 15px; 
+        padding: 15px; 
+        border-radius: 10px; 
+    }
+    .btn { 
+        width: 100%; 
+        margin: 5px 0; 
+        padding: 12px; 
+    }
+    .search-box { 
+        width: 100%; 
+        padding: 12px; 
+        font-size: 16px; 
+    }
+}

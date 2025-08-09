@@ -1,0 +1,96 @@
+🚀 RENDER DEPLOYMENT - STEP BY STEP
+=====================================
+
+Your code is now on GitHub! Time to deploy to Render for FREE 24/7 access!
+
+🎯 RENDER DEPLOYMENT STEPS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: Sign Up for Render
+──────────────────────────
+1. Go to: https://render.com
+2. Click "Get Started for Free"
+3. Sign up with your GitHub account (recommended)
+4. ✅ No credit card required!
+
+STEP 2: Create Web Service
+─────────────────────────
+1. In Render dashboard, click "New +"
+2. Select "Web Service"
+3. Click "Connect a repository"
+4. Authorize Render to access your GitHub
+5. Select: "Nigerian-Event-Pipeline" repository
+
+STEP 3: Configure Deployment
+───────────────────────────
+Fill in these settings:
+
+📝 Basic Settings:
+   Name: nigerian-events
+   Environment: Python 3
+   Build Command: pip install -r requirements.txt
+   Start Command: python main.py
+
+💡 Advanced Settings:
+   Auto-Deploy: Yes (deploys when you push to GitHub)
+
+STEP 4: Environment Variables
+────────────────────────────
+⚠️ IMPORTANT: Add your API keys as environment variables
+
+Click "Environment" tab and add:
+
+🔑 Variable Name: GOOGLE_API_KEY
+   Value: [paste your Google API key here]
+
+🔍 Variable Name: GOOGLE_CSE_ID  
+   Value: [paste your Google CSE ID here]
+
+🌐 Variable Name: PORT
+   Value: 10000
+
+🏠 Variable Name: FLASK_HOST
+   Value: 0.0.0.0
+
+STEP 5: Deploy!
+──────────────
+1. Click "Create Web Service"
+2. Render will automatically:
+   ✅ Clone your GitHub repository
+   ✅ Install Python dependencies from requirements.txt
+   ✅ Start your application with main.py
+   ✅ Assign a global URL
+
+⏱️ Deployment takes 2-5 minutes
+
+🎉 SUCCESS - YOU'LL GET:
+━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🌍 Global URL: https://nigerian-events.onrender.com
+📱 24/7 mobile access from anywhere in the world
+☁️ Always-on (works even when your PC is off)
+🔒 Automatic HTTPS security
+🆓 Completely FREE hosting (750 hours/month)
+📊 Your Nigerian events dashboard
+⚡ Real-time updates every 2 hours
+💾 Persistent cloud database
+🎯 Smart quota management (no API overuse)
+
+🔧 AFTER DEPLOYMENT:
+━━━━━━━━━━━━━━━━━━━━━
+
+✅ Test your global URL on mobile
+✅ Check logs in Render dashboard
+✅ Monitor your app's performance
+✅ Share your URL with others!
+
+🎯 NEED YOUR API KEYS?
+━━━━━━━━━━━━━━━━━━━━━
+
+Check your .env file for:
+- GOOGLE_API_KEY=your_key_here
+- GOOGLE_CSE_ID=your_id_here
+
+Copy these values to Render's environment variables!
+
+🚀 Ready to deploy? Go to render.com and start!

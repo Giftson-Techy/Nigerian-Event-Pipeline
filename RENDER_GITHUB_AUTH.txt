@@ -1,0 +1,78 @@
+🔗 RENDER GITHUB AUTHORIZATION GUIDE
+====================================
+
+You're at the step where Render needs permission to access your GitHub repositories.
+
+🎯 WHAT TO DO:
+━━━━━━━━━━━━━━
+
+1. ✅ AUTHORIZE RENDER:
+   - You should see a GitHub authorization page
+   - Click "Authorize Render" or "Install & Authorize"
+   - This gives Render permission to see your repositories
+
+2. 🔐 CHOOSE PERMISSIONS:
+   - Render will ask for repository access
+   - You can choose:
+     📂 "All repositories" (easiest)
+     📂 "Selected repositories" → choose "Nigerian-Event-Pipeline"
+
+3. ✅ CONFIRM AUTHORIZATION:
+   - Click "Install" or "Authorize"
+   - You'll be redirected back to Render
+
+🎯 AFTER AUTHORIZATION:
+━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 📁 SELECT REPOSITORY:
+   - You should now see your repositories listed
+   - Find and click: "Nigerian-Event-Pipeline"
+
+2. ⚙️ CONFIGURE DEPLOYMENT:
+   - Name: nigerian-events
+   - Environment: Python 3
+   - Build Command: pip install -r requirements.txt
+   - Start Command: python main.py
+
+3. 🔑 ADD ENVIRONMENT VARIABLES:
+   - GOOGLE_API_KEY = AIzaSyCrAbL3wuKwejD3dKuBoL7q3U6oOGEDEDc
+   - GOOGLE_CSE_ID = 979f891fa78df44b8
+   - PORT = 10000
+   - FLASK_HOST = 0.0.0.0
+
+4. 🚀 DEPLOY:
+   - Click "Create Web Service"
+   - Wait 2-5 minutes for deployment
+
+🔒 SECURITY NOTE:
+━━━━━━━━━━━━━━━━
+
+✅ This authorization is safe and standard
+✅ Render only gets read access to deploy your code
+✅ Your GitHub account remains secure
+✅ You can revoke access anytime in GitHub settings
+
+🎯 TROUBLESHOOTING:
+━━━━━━━━━━━━━━━━━━
+
+❓ Don't see authorization page?
+   → Refresh browser or try incognito mode
+
+❓ Authorization failed?
+   → Make sure you're logged into GitHub
+   → Try again from render.com → New Web Service
+
+❓ Can't see your repository?
+   → Make sure "Nigerian-Event-Pipeline" is public
+   → Check repository name spelling
+
+🚀 NEXT STEPS:
+━━━━━━━━━━━━━━
+
+1. Complete the GitHub authorization
+2. Select "Nigerian-Event-Pipeline" repository  
+3. Configure deployment settings
+4. Add environment variables (API keys)
+5. Deploy and get your global URL!
+
+You're almost there! 🎉
