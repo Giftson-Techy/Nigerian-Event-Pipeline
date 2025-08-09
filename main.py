@@ -1,6 +1,30 @@
 #!/usr/bin/env python3
 """
-Event Pipeline - Mai    print(f"🌐 Starting web server on http://{host}:{port}")
+Event Pipeline - M    # Run initial scrape (skip in cloud for faster startup)
+    if os.environ.get('PORT'):
+        # Running on cloud platform - skip initial scrape for faster startup
+        print("☁️ Cloud deployment detected - skipping initial scrape")
+        print("📅 Scheduler will run automatically in background")
+    else:
+        # Running locally - do initial scrape
+        print("🔍 Running initial event scrape...")
+        scheduler.run_pipeline()
+    
+    # Start web server (cloud-optimized)
+    port = int(os.environ.get('PORT', os.getenv('FLASK_PORT', 5000)))
+    host = '0.0.0.0'  # Required for cloud hosting
+    
+    if os.environ.get('PORT'):
+        print(f"☁️ Starting Nigerian Event Pipeline on Render (port {port})")
+        print("🌍 Global access ready!")
+        print("📱 Mobile-optimized dashboard!")
+    else:
+        print(f"� Starting web server on http://{host}:{port}")
+        print(f"📱 Local access: http://localhost:{port}")
+        print("📊 View your events dashboard at the URLs above")
+        print("\n💡 For mobile access from anywhere:")
+        print("   🔥 Best: Setup Cloudflare Tunnel (run: python setup_cloudflare_tunnel.py)")
+        print("   ⚡ Quick: Setup ngrok (run: python setup_ngrok.py)")🌐 Starting web server on http://{host}:{port}")
     print(f"📱 Local access: http://localhost:{port}")
     print(f"📱 Network access: http://10.233.205.205:{port}")
     print("📊 View your events dashboard at the URLs above")
