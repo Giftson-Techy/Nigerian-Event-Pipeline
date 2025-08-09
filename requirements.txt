@@ -4,5 +4,5 @@ beautifulsoup4==4.12.2
 schedule==1.2.0
 python-dotenv==1.0.0
 google-api-python-client==2.97.0
-lxml==4.9.3
+lxml>=5.0.0
 feedparser==6.0.10
