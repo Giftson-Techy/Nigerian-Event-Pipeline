@@ -1,0 +1,104 @@
+🔄 RECONNECT RENDER - DEPLOYMENT GUIDE
+=====================================
+
+Your GitHub repo should now have the missing files. Let's get Render to deploy!
+
+🎯 OPTION 1: MANUAL DEPLOY (QUICKEST)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 🌐 GO TO RENDER DASHBOARD:
+   - Visit: https://dashboard.render.com
+   - Sign in to your account
+
+2. 📱 FIND YOUR SERVICE:
+   - Look for "nigerian-events" service
+   - Click on it
+
+3. 🚀 MANUAL DEPLOY:
+   - Click "Manual Deploy" button
+   - Select "Deploy latest commit"
+   - Click "Deploy"
+
+4. ⏱️ WAIT FOR DEPLOYMENT:
+   - Watch the logs for 2-5 minutes
+   - Should succeed this time!
+
+🎯 OPTION 2: CREATE NEW SERVICE (FRESH START)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If Option 1 doesn't work, create a new service:
+
+1. 🆕 NEW WEB SERVICE:
+   - Dashboard → "New +" → "Web Service"
+
+2. 🔗 CONNECT REPOSITORY:
+   - Select "Nigerian-Event-Pipeline" repo
+   - Should now show all files including requirements.txt
+
+3. ⚙️ CONFIGURE:
+   Name: nigerian-events-v2
+   Environment: Python 3
+   Build Command: pip install -r requirements.txt
+   Start Command: python main.py
+
+4. 🔑 ENVIRONMENT VARIABLES:
+   Add these in Environment section:
+   
+   GOOGLE_API_KEY = AIzaSyCrAbL3wuKwejD3dKuBoL7q3U6oOGEDEDc
+   GOOGLE_CSE_ID = 979f891fa78df44b8
+   PORT = 10000
+   FLASK_HOST = 0.0.0.0
+
+5. 🚀 DEPLOY:
+   - Click "Create Web Service"
+   - Watch deployment logs
+
+🎯 OPTION 3: AUTO-DEPLOY TRIGGER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you have auto-deploy enabled:
+
+1. 📤 PUSH TO GITHUB:
+   - Any new commit triggers auto-deploy
+   - Make a small change and push
+
+2. 🔄 AUTOMATIC DEPLOYMENT:
+   - Render detects GitHub changes
+   - Deploys automatically
+
+🔍 TROUBLESHOOTING CHECKLIST:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ VERIFY ON GITHUB:
+- Go to: https://github.com/Giftson-Techy/Nigerian-Event-Pipeline
+- Check these files exist:
+  ✅ requirements.txt
+  ✅ main.py
+  ✅ Procfile
+  ✅ runtime.txt
+  ✅ scrapers/ folder
+  ✅ web/ folder
+
+✅ VERIFY RENDER SETTINGS:
+- Build Command: pip install -r requirements.txt
+- Start Command: python main.py
+- Environment variables added
+- Repository connection active
+
+🎉 SUCCESS INDICATORS:
+━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Build logs show: "Successfully installed flask requests..."
+✅ Application logs show: "🚀 Starting Event Pipeline..."
+✅ Service status: "Live"
+✅ You get a working URL!
+
+🌍 FINAL RESULT:
+━━━━━━━━━━━━━━━━
+
+🎯 Global URL: https://nigerian-events.onrender.com
+📱 24/7 mobile access from anywhere
+☁️ Always-on Nigerian Event Pipeline
+🆓 Completely FREE hosting!
+
+🚀 TRY OPTION 1 FIRST - Manual Deploy is usually fastest!
