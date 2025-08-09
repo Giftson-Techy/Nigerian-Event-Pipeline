@@ -98,6 +98,24 @@
     </div>
 </div>
 
+<!-- Manual Trigger Section (when no events) -->
+{% if total_events == 0 %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card bg-warning text-dark">
+            <div class="card-body text-center">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>No Events Found</h5>
+                <p class="mb-3">Your pipeline is live but no events have been discovered yet. Click below to manually trigger event discovery:</p>
+                <button class="btn btn-primary btn-lg" onclick="triggerEventDiscovery()">
+                    <i class="fas fa-search me-2"></i>Discover Nigerian Events Now
+                </button>
+                <div id="trigger-status" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <!-- Recent Events -->
 <div class="row">
     <div class="col-12">
@@ -284,5 +302,63 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.log('Failed to load country info:', error));
 });
+
+// Manual event discovery trigger
+async function triggerEventDiscovery() {
+    const button = document.querySelector('button[onclick="triggerEventDiscovery()"]');
+    const statusDiv = document.getElementById('trigger-status');
+    
+    // Update button state
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Discovering Events...';
+    
+    // Show status
+    statusDiv.innerHTML = '<div class="alert alert-info"><i class="fas fa-clock me-2"></i>Searching Google for Nigerian events...</div>';
+    
+    try {
+        const response = await fetch('/api/trigger-scrape', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            statusDiv.innerHTML = `
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>
+                    ${result.message}<br>
+                    <strong>Events found: ${result.events_found}</strong>
+                </div>
+            `;
+            
+            // Reload page after 3 seconds to show new events
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        } else {
+            statusDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    ${result.message}
+                </div>
+            `;
+        }
+    } catch (error) {
+        statusDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                Error: ${error.message}
+            </div>
+        `;
+    }
+    
+    // Reset button
+    button.disabled = false;
+    button.innerHTML = originalText;
+}
 </script>
 {% endblock %}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trigger Event Scraping - Nigerian Events</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 50px auto; 
+            padding: 20px;
+            background: linear-gradient(135deg, #00B04F, #1E3A8A);
+            color: white;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .btn {
+            background: #00B04F;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            background: #009E44;
+        }
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .success {
+            background: rgba(0, 176, 79, 0.2);
+            border: 1px solid #00B04F;
+        }
+        .error {
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid #dc3545;
+        }
+        .loading {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid #ffc107;
+        }
+        .flag {
+            width: 20px;
+            height: 15px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇳🇬 Nigerian Event Pipeline</h1>
+        <h2>Manual Event Scraping</h2>
+        
+        <p>Click the button below to manually trigger event discovery from Google Search:</p>
+        
+        <button id="triggerBtn" class="btn" onclick="triggerScraping()">
+            🔍 Start Event Discovery
+        </button>
+        
+        <button class="btn" onclick="window.location.href='/'">
+            📊 View Dashboard
+        </button>
+        
+        <div id="status" class="status"></div>
+        
+        <div style="margin-top: 30px;">
+            <h3>🎯 What This Does:</h3>
+            <ul>
+                <li>Searches Google for Nigerian events</li>
+                <li>Discovers concerts, conferences, tech events, cultural events</li>
+                <li>Saves events to the database</li>
+                <li>Updates your dashboard with fresh data</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function triggerScraping() {
+            const btn = document.getElementById('triggerBtn');
+            const status = document.getElementById('status');
+            
+            // Update UI
+            btn.disabled = true;
+            btn.textContent = '🔄 Searching for Events...';
+            status.className = 'status loading';
+            status.style.display = 'block';
+            status.innerHTML = '⏳ Discovering Nigerian events from Google Search...';
+            
+            try {
+                const response = await fetch('/api/trigger-scrape', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    status.className = 'status success';
+                    status.innerHTML = `✅ ${result.message}<br>📅 Events found: ${result.events_found}`;
+                    
+                    // Auto-redirect to dashboard after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 3000);
+                } else {
+                    status.className = 'status error';
+                    status.innerHTML = `❌ ${result.message}`;
+                }
+            } catch (error) {
+                status.className = 'status error';
+                status.innerHTML = `❌ Error: ${error.message}`;
+            }
+            
+            // Reset button
+            btn.disabled = false;
+            btn.textContent = '🔍 Start Event Discovery';
+        }
+    </script>
+</body>
+</html>

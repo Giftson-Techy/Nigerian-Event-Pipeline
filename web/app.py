@@ -178,4 +178,30 @@ def create_app():
         """Test page for country functionality"""
         return render_template('test_country.html')
     
+    @app.route('/api/trigger-scrape', methods=['POST'])
+    def trigger_scrape():
+        """Manually trigger event scraping"""
+        try:
+            from scheduler import EventScheduler
+            scheduler = EventScheduler()
+            
+            # Run the scraping pipeline
+            result = scheduler.run_pipeline()
+            
+            return jsonify({
+                'success': True,
+                'message': 'Event scraping completed successfully!',
+                'events_found': result.get('total_events', 0) if result else 0
+            })
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'message': f'Error during scraping: {str(e)}'
+            }), 500
+    
+    @app.route('/trigger-scrape')
+    def trigger_scrape_page():
+        """Page to manually trigger scraping"""
+        return render_template('trigger_scrape.html')
+    
     return app
