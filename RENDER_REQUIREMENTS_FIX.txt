@@ -1,0 +1,60 @@
+🔍 RENDER CAN'T SEE REQUIREMENTS.TXT - SOLUTION
+===============================================
+
+PROBLEM: Render is looking at an older GitHub commit that doesn't have requirements.txt
+
+✅ SOLUTION 1: FORCE RENDER TO UPDATE (EASIEST)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 🌐 GO TO RENDER DASHBOARD:
+   - https://dashboard.render.com
+   - Find your "nigerian-events" service
+
+2. 🔄 FORCE NEW DEPLOY:
+   - Click on your service
+   - Go to "Deploys" tab
+   - Click "Manual Deploy"
+   - Select "Clear build cache & deploy"
+   - Wait for fresh deployment
+
+✅ SOLUTION 2: CHECK RENDER'S BRANCH/COMMIT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 📋 IN RENDER SERVICE SETTINGS:
+   - Go to "Settings" tab
+   - Check "Branch" is set to "main"
+   - Check "Auto-Deploy" is enabled
+
+2. 🔄 TRIGGER NEW COMMIT:
+   We'll make a small change to force update
+
+✅ SOLUTION 3: CREATE FRESH SERVICE (GUARANTEED)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 🗑️ DELETE OLD SERVICE:
+   - In Render dashboard
+   - Delete "nigerian-events" service
+
+2. 🆕 CREATE NEW SERVICE:
+   - "New +" → "Web Service"
+   - Connect "Nigerian-Event-Pipeline" repo
+   - NOW it will see the latest files!
+
+3. ⚙️ CONFIGURE:
+   - Name: nigerian-events-fixed
+   - Build: pip install -r requirements.txt
+   - Start: python main.py
+   - Add environment variables
+
+🎯 WHY THIS HAPPENS:
+━━━━━━━━━━━━━━━━━━━━
+
+- Render caches the repository state
+- When you first connected, requirements.txt wasn't there
+- Render is still looking at that old state
+- Need to force it to see the updated repository
+
+🚀 QUICK FIX - TRIGGER NEW COMMIT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Let's make a tiny change to force GitHub update:
