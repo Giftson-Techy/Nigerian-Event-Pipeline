@@ -18,7 +18,9 @@ class PrioritizedQueryManager:
             {"query": "conferences this week Lagos", "priority": "urgent", "type": "search"},
             {"query": "business events Abuja today", "priority": "urgent", "type": "search"},
             {"query": "tech conferences Lagos 2025", "priority": "urgent", "type": "search"},
-            {"query": "Nigeria summit today", "priority": "urgent", "type": "search"}
+            {"query": "Nigeria summit today", "priority": "urgent", "type": "search"},
+            {"query": "site:bellanaija.com events Lagos", "priority": "urgent", "type": "search"},
+            {"query": "site:pulse.ng conferences Nigeria", "priority": "urgent", "type": "search"}
         ]
         
         # TIER 2: HIGH - Major cities and important events (Priority: high)
@@ -26,13 +28,14 @@ class PrioritizedQueryManager:
             {"query": "Lagos business events", "priority": "high", "type": "search"},
             {"query": "Abuja conferences", "priority": "high", "type": "search"},
             {"query": "Port Harcourt events", "priority": "high", "type": "search"},
-            {"query": "Kano business summit", "priority": "high", "type": "search"},
-            {"query": "Ibadan tech events", "priority": "high", "type": "search"},
             {"query": "Nigeria oil gas conference", "priority": "high", "type": "search"},
             {"query": "Nigerian banking summit", "priority": "high", "type": "search"},
             {"query": "Lagos tech startup events", "priority": "high", "type": "search"},
-            {"query": "Abuja government events", "priority": "high", "type": "search"},
-            {"query": "Nigeria investment forum", "priority": "high", "type": "search"}
+            {"query": "site:vanguardngr.com events Nigeria", "priority": "high", "type": "search"},
+            {"query": "site:premiumtimesng.com conferences Lagos", "priority": "high", "type": "search"},
+            {"query": "site:thenationonlineng.net business events", "priority": "high", "type": "search"},
+            {"query": "site:punchng.com summit Nigeria", "priority": "high", "type": "search"},
+            {"query": "site:dailytrust.com conferences Abuja", "priority": "high", "type": "search"}
         ]
         
         # TIER 3: MEDIUM - Regional centers (Priority: medium)
@@ -72,7 +75,27 @@ class PrioritizedQueryManager:
             {"query": "site:eventbrite.com Nigeria conferences", "priority": "social", "type": "social"},
             {"query": "site:meetup.com Lagos tech meetup", "priority": "social", "type": "social"},
             {"query": "site:linkedin.com Nigeria summit", "priority": "social", "type": "social"},
-            {"query": "site:facebook.com Port Harcourt events", "priority": "social", "type": "social"}
+            {"query": "site:facebook.com Port Harcourt events", "priority": "social", "type": "social"},
+            {"query": "\"Nigeria event\" site:linkedin.com OR site:facebook.com", "priority": "social", "type": "social"},
+            {"query": "\"Lagos conference\" site:twitter.com OR site:instagram.com", "priority": "social", "type": "social"},
+            {"query": "\"Abuja summit\" site:linkedin.com", "priority": "social", "type": "social"},
+            {"query": "\"Nigerian business event\" site:facebook.com", "priority": "social", "type": "social"},
+            {"query": "site:nairaland.com events Lagos", "priority": "social", "type": "social"},
+            {"query": "site:nairaland.com conferences Nigeria", "priority": "social", "type": "social"}
+        ]
+        
+        # NIGERIAN MEDIA SITES - Specific news/event sites (Priority: media)
+        self.nigerian_media_queries = [
+            {"query": "site:bellanaija.com events OR conferences OR summit", "priority": "media", "type": "media"},
+            {"query": "site:pulse.ng business events OR tech conference", "priority": "media", "type": "media"},
+            {"query": "site:vanguardngr.com Lagos events OR Abuja conference", "priority": "media", "type": "media"},
+            {"query": "site:premiumtimesng.com Nigeria summit OR business event", "priority": "media", "type": "media"},
+            {"query": "site:thenationonlineng.net conferences OR events Nigeria", "priority": "media", "type": "media"},
+            {"query": "site:punchng.com Lagos business OR tech events", "priority": "media", "type": "media"},
+            {"query": "site:dailytrust.com Abuja events OR Northern Nigeria", "priority": "media", "type": "media"},
+            {"query": "site:leadership.ng events OR conferences Nigeria", "priority": "media", "type": "media"},
+            {"query": "site:businessday.ng Lagos summit OR investment", "priority": "media", "type": "media"},
+            {"query": "site:guardian.ng Nigeria events OR conferences", "priority": "media", "type": "media"}
         ]
     
     def get_all_queries(self) -> List[Dict]:
@@ -81,7 +104,8 @@ class PrioritizedQueryManager:
                 self.high_priority_queries + 
                 self.medium_priority_queries + 
                 self.low_priority_queries + 
-                self.social_media_queries)
+                self.social_media_queries +
+                self.nigerian_media_queries)
     
     def get_queries_by_priority(self, priority: str) -> List[Dict]:
         """Get queries by specific priority level"""
@@ -90,7 +114,8 @@ class PrioritizedQueryManager:
             'high': self.high_priority_queries,
             'medium': self.medium_priority_queries,
             'low': self.low_priority_queries,
-            'social': self.social_media_queries
+            'social': self.social_media_queries,
+            'media': self.nigerian_media_queries
         }
         return priority_map.get(priority, [])
     
@@ -99,7 +124,7 @@ class PrioritizedQueryManager:
         all_queries = self.get_all_queries()
         
         # Sort by priority weight
-        priority_weights = {'urgent': 5, 'high': 4, 'medium': 3, 'low': 2, 'social': 1}
+        priority_weights = {'urgent': 6, 'high': 5, 'media': 4, 'medium': 3, 'social': 2, 'low': 1}
         sorted_queries = sorted(all_queries, 
                               key=lambda x: priority_weights.get(x['priority'], 0), 
                               reverse=True)
@@ -132,6 +157,12 @@ class PrioritizedQueryManager:
         logger.info(f"📱 Social: Selected {len(selected)} social media queries")
         return selected
     
+    def get_media_queries(self, max_calls: int) -> List[Dict]:
+        """Get Nigerian media site queries"""
+        selected = self.nigerian_media_queries[:max_calls]
+        logger.info(f"📰 Media: Selected {len(selected)} Nigerian media queries")
+        return selected
+    
     def get_query_stats(self) -> Dict:
         """Get statistics about available queries"""
         all_queries = self.get_all_queries()
@@ -141,7 +172,8 @@ class PrioritizedQueryManager:
             'high': len(self.high_priority_queries),
             'medium': len(self.medium_priority_queries),
             'low': len(self.low_priority_queries),
-            'social': len(self.social_media_queries)
+            'social': len(self.social_media_queries),
+            'media': len(self.nigerian_media_queries)
         }
         return stats
 
