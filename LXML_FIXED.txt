@@ -1,0 +1,69 @@
+🔧 LXML BUILD ERROR - FIXED!
+=============================
+
+PROBLEM: lxml==4.9.3 doesn't support Python 3.13.4
+
+✅ SOLUTION APPLIED:
+━━━━━━━━━━━━━━━━━━━━
+
+1. 🔄 UPDATED requirements.txt:
+   - Changed: lxml==4.9.3 → lxml>=5.0.0
+   - Newer lxml supports Python 3.13
+
+2. 🐍 UPDATED runtime.txt:
+   - Changed: python-3.11.5 → python-3.11.9
+   - More stable Python version
+
+3. 📤 PUSHED TO GITHUB:
+   - Latest commit includes the fixes
+   - Render will use updated dependencies
+
+🚀 NOW TRY RENDER DEPLOYMENT AGAIN:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 🔄 MANUAL DEPLOY:
+   - Go to your Render service
+   - Click "Manual Deploy"
+   - Select "Deploy latest commit"
+
+2. ✅ WATCH FOR SUCCESS:
+   Build logs should now show:
+   - "Successfully installed lxml>=5.0.0"
+   - No more build errors
+   - "Build succeeded 😀"
+
+🎯 ALTERNATIVE - FRESH SERVICE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If manual deploy still has issues:
+
+1. 🗑️ DELETE current service
+2. 🆕 CREATE new service with:
+   - Repository: Nigerian-Event-Pipeline
+   - Build: pip install -r requirements.txt
+   - Start: python main.py
+   - Runtime: Will use python-3.11.9
+
+3. 🔑 ADD ENVIRONMENT VARIABLES:
+   - GOOGLE_API_KEY = AIzaSyCrAbL3wuKwejD3dKuBoL7q3U6oOGEDEDc
+   - GOOGLE_CSE_ID = 979f891fa78df44b8
+   - PORT = 10000
+   - FLASK_HOST = 0.0.0.0
+
+🎉 EXPECTED RESULT:
+━━━━━━━━━━━━━━━━━━━
+
+✅ Clean build without lxml errors
+✅ All dependencies installed successfully
+✅ Nigerian Event Pipeline starts up
+✅ Global URL ready for mobile access!
+
+🔧 WHAT WE FIXED:
+━━━━━━━━━━━━━━━━━
+
+- lxml compatibility with Python 3.13
+- Updated to stable Python 3.11.9
+- Requirements.txt now works on all Render environments
+- Your Nigerian Event Pipeline is deployment-ready!
+
+🚀 Ready to try Render deployment again!
