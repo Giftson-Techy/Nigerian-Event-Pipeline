@@ -98,6 +98,22 @@
     </div>
 </div>
 
+<!-- Manual Event Discovery Trigger -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-primary">
+            <div class="card-body text-center">
+                <h6 class="card-title"><i class="fas fa-rocket me-2"></i>Event Discovery</h6>
+                <p class="text-muted mb-3">Manually trigger Nigerian event discovery from Google Search</p>
+                <button class="btn btn-primary" onclick="triggerEventDiscovery()">
+                    <i class="fas fa-search me-2"></i>Discover Events Now
+                </button>
+                <div id="trigger-status" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Manual Trigger Section (when no events) -->
 {% if total_events == 0 %}
 <div class="row mb-4">
