@@ -14,8 +14,6 @@ import logging
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from scrapers.search_scraper import SearchScraper
-from scrapers.news_scraper import NewsScraper
-from apis.social_media_api import SocialMediaAPI
 from database.db_manager import DatabaseManager
 from config.country_manager import country_manager
 
@@ -24,13 +22,11 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class EventScheduler:
-    """Manages automated event discovery pipeline"""
+    """Manages automated event discovery pipeline - Google Search Only"""
     
     def __init__(self):
         self.db_manager = DatabaseManager()
         self.search_scraper = SearchScraper()
-        self.news_scraper = NewsScraper()
-        self.social_api = SocialMediaAPI()
         self.running = False
     
     def run_pipeline(self):
@@ -45,26 +41,12 @@ class EventScheduler:
             # Ensure search scraper uses current country
             self.search_scraper.set_country(current_country)
             
-            # Search engines scraping
-            logger.info(f"🔍 Scraping search engines for {current_country} events...")
+            # Google Search scraping (ONLY SOURCE)
+            logger.info(f"🔍 Scraping Google Search for {current_country} events...")
             search_events = self.search_scraper.scrape_all()
             total_events += len(search_events)
             self.db_manager.save_events(search_events)
-            logger.info(f"✅ Found {len(search_events)} events from search engines")
-            
-            # News sites scraping
-            logger.info("📰 Scraping news sites...")
-            news_events = self.news_scraper.scrape_all()
-            total_events += len(news_events)
-            self.db_manager.save_events(news_events)
-            logger.info(f"✅ Found {len(news_events)} events from news sites")
-            
-            # Social media APIs
-            logger.info("📱 Fetching from social media APIs...")
-            social_events = self.social_api.get_all_events()
-            total_events += len(social_events)
-            self.db_manager.save_events(social_events)
-            logger.info(f"✅ Found {len(social_events)} events from social media")
+            logger.info(f"✅ Found {len(search_events)} events from Google Search")
             
             # Clean old events
             self.db_manager.cleanup_old_events()
