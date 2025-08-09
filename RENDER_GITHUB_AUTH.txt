@@ -35,8 +35,8 @@ You're at the step where Render needs permission to access your GitHub repositor
    - Start Command: python main.py
 
 3. 🔑 ADD ENVIRONMENT VARIABLES:
-   - GOOGLE_API_KEY = AIzaSyCrAbL3wuKwejD3dKuBoL7q3U6oOGEDEDc
-   - GOOGLE_CSE_ID = 979f891fa78df44b8
+   - GOOGLE_API_KEY = [YOUR_NEW_API_KEY_HERE]
+   - GOOGLE_CSE_ID = [YOUR_CSE_ID_HERE]
    - PORT = 10000
    - FLASK_HOST = 0.0.0.0
 
