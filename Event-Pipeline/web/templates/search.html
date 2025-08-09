@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% if query %} for "{{ query }}"{% endif %} - Event Pipeline{% endblock %}
+
+{% block content %}
+<!-- Search Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h2 class="mb-2">
+                    <i class="fas fa-search me-2"></i>
+                    Search Results
+                    {% if query %}
+                    for "{{ query }}"
+                    {% endif %}
+                </h2>
+                <p class="mb-0">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Found {{ events|length }} matching events
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Form -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="/search" method="GET" class="row g-3">
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" name="q" value="{{ query }}" 
+                               placeholder="Search for events, locations, categories...">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search me-1"></i>
+                            Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation Back -->
+<div class="row mb-3">
+    <div class="col-12">
+        <a href="/" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>
+            Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- Search Results -->
+<div class="row">
+    <div class="col-12">
+        {% if events %}
+        <div class="row">
+            {% for event in events %}
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="card event-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-info source-badge">{{ event.source }}</span>
+                            {% if event.category %}
+                            <span class="badge bg-secondary source-badge">{{ event.category }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <h6 class="card-title">
+                            <a href="{{ event.url }}" target="_blank" class="text-decoration-none">
+                                {{ event.title[:80] }}{% if event.title|length > 80 %}...{% endif %}
+                            </a>
+                        </h6>
+                        
+                        {% if event.description %}
+                        <p class="card-text text-muted small">
+                            {{ event.description[:120] }}{% if event.description|length > 120 %}...{% endif %}
+                        </p>
+                        {% endif %}
+                        
+                        <div class="small text-muted mb-2">
+                            {% if event.location %}
+                            <i class="fas fa-map-marker-alt me-1"></i>
+                            {{ event.location }}
+                            <br>
+                            {% endif %}
+                            
+                            {% if event.event_date %}
+                            <i class="fas fa-calendar me-1"></i>
+                            {{ event.event_date }}
+                            <br>
+                            {% endif %}
+                            
+                            {% if event.organizer %}
+                            <i class="fas fa-user me-1"></i>
+                            {{ event.organizer }}
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ event.url }}" target="_blank" class="btn btn-primary btn-sm">
+                                <i class="fas fa-external-link-alt me-1"></i>
+                                View Event
+                            </a>
+                            {% if event.price %}
+                            <span class="badge bg-success">{{ event.price }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            {% if query %}
+            <i class="fas fa-search-minus fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No events found for "{{ query }}"</h5>
+            <p class="text-muted">Try searching for different keywords or browse all events.</p>
+            {% else %}
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">Enter a search term</h5>
+            <p class="text-muted">Search for events by title, description, location, or category.</p>
+            {% endif %}
+            <a href="/" class="btn btn-primary">
+                <i class="fas fa-home me-1"></i>
+                Browse All Events
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Search Suggestions -->
+{% if not events and query %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    Search Suggestions
+                </h6>
+            </div>
+            <div class="card-body">
+                <p class="mb-3">Try searching for:</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="/search?q=concert" class="btn btn-outline-primary btn-sm">Concert</a>
+                    <a href="/search?q=festival" class="btn btn-outline-primary btn-sm">Festival</a>
+                    <a href="/search?q=conference" class="btn btn-outline-primary btn-sm">Conference</a>
+                    <a href="/search?q=workshop" class="btn btn-outline-primary btn-sm">Workshop</a>
+                    <a href="/search?q=meetup" class="btn btn-outline-primary btn-sm">Meetup</a>
+                    <a href="/search?q=music" class="btn btn-outline-primary btn-sm">Music</a>
+                    <a href="/search?q=tech" class="btn btn-outline-primary btn-sm">Tech</a>
+                    <a href="/search?q=business" class="btn btn-outline-primary btn-sm">Business</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
