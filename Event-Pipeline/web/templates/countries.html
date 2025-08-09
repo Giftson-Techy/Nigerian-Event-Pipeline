@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Country Management Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card bg-gradient-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-1">
+                            <i class="fas fa-globe me-2"></i>
+                            Country & Region Settings
+                        </h4>
+                        <p class="mb-0">Configure event search regions and preferences</p>
+                    </div>
+                    <div class="text-end">
+                        <h5 class="mb-0">Current: {{ current_country }}</h5>
+                        <small>Active search region</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Current Country Info -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Current Region: {{ current_country }}
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if country_info %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-city me-2"></i>Major Cities</h6>
+                        <div class="mb-3">
+                            {% for city in country_info.cities[:8] %}
+                            <span class="badge bg-secondary me-1 mb-1">{{ city }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-clock me-2"></i>Time Zone</h6>
+                        <p class="mb-2">{{ country_info.time_zone }}</p>
+                        
+                        <h6><i class="fas fa-dollar-sign me-2"></i>Currency</h6>
+                        <p class="mb-2">{{ country_info.currency }}</p>
+                    </div>
+                </div>
+                
+                <h6><i class="fas fa-search me-2"></i>Search Terms</h6>
+                <div class="mb-3">
+                    {% for term in country_info.search_terms[:10] %}
+                    <span class="badge bg-info me-1 mb-1">{{ term }}</span>
+                    {% endfor %}
+                    {% if country_info.search_terms|length > 10 %}
+                    <span class="badge bg-light text-dark">+{{ country_info.search_terms|length - 10 }} more</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-cogs me-2"></i>
+                    Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" onclick="location.href='/'">
+                        <i class="fas fa-home me-1"></i>
+                        Back to Dashboard
+                    </button>
+                    <button class="btn btn-success" onclick="triggerSearch()">
+                        <i class="fas fa-sync-alt me-1"></i>
+                        Run Search Now
+                    </button>
+                    <button class="btn btn-info" onclick="location.reload()">
+                        <i class="fas fa-refresh me-1"></i>
+                        Refresh Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Available Countries -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-map me-2"></i>
+                    Available Countries & Regions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for country in available_countries %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card country-card h-100 {% if country == current_country %}border-primary{% endif %}">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="card-title mb-1">
+                                        {% if country == 'Nigeria' %}🇳🇬{% endif %}
+                                        {% if country == 'United States' %}🇺🇸{% endif %}
+                                        {% if country == 'United Kingdom' %}🇬🇧{% endif %}
+                                        {% if country == 'Canada' %}🇨🇦{% endif %}
+                                        {% if country == 'Australia' %}🇦🇺{% endif %}
+                                        {{ country }}
+                                    </h6>
+                                    {% if country == current_country %}
+                                    <span class="badge bg-success">Active</span>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if country == 'Nigeria' %}
+                                <p class="card-text small text-muted">
+                                    Searches Lagos, Abuja, Port Harcourt and other major Nigerian cities.
+                                    Includes local events and international events in Nigeria.
+                                </p>
+                                {% elif country == 'United States' %}
+                                <p class="card-text small text-muted">
+                                    Covers NYC, LA, Chicago and major US metropolitan areas.
+                                    Comprehensive coverage of American events.
+                                </p>
+                                {% elif country == 'United Kingdom' %}
+                                <p class="card-text small text-muted">
+                                    London, Manchester, Birmingham and other UK cities.
+                                    British events and international events in the UK.
+                                </p>
+                                {% elif country == 'Canada' %}
+                                <p class="card-text small text-muted">
+                                    Toronto, Vancouver, Montreal and major Canadian cities.
+                                    Canadian events and international events in Canada.
+                                </p>
+                                {% elif country == 'Australia' %}
+                                <p class="card-text small text-muted">
+                                    Sydney, Melbourne, Brisbane and major Australian cities.
+                                    Aussie events and international events in Australia.
+                                </p>
+                                {% endif %}
+                                
+                                <div class="mt-auto">
+                                    {% if country == current_country %}
+                                    <button class="btn btn-success btn-sm w-100" disabled>
+                                        <i class="fas fa-check me-1"></i>
+                                        Currently Active
+                                    </button>
+                                    {% else %}
+                                    <button class="btn btn-primary btn-sm w-100" onclick="setCountry('{{ country }}')">
+                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                        Select {{ country }}
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Country Search Statistics -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Event Statistics by Region
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Note:</strong> Changing your search country will affect future event discovery. 
+                    The next pipeline run (every 15 minutes) will search for events in your selected region.
+                </div>
+                
+                <div class="text-center py-4">
+                    <i class="fas fa-globe-americas fa-3x text-muted mb-3"></i>
+                    <h6 class="text-muted">Global Event Discovery</h6>
+                    <p class="text-muted">Your pipeline automatically searches multiple sources for events in your selected country.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Country selection function
+function setCountry(country) {
+    fetch('/api/set-country', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({country: country})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show';
+            alertDiv.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                Country changed to ${country}. Next pipeline run will search for events in this region.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.querySelector('.container-fluid').insertBefore(alertDiv, document.querySelector('.row'));
+            
+            // Reload page after 2 seconds to show updated info
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to change country');
+    });
+}
+
+// Trigger manual search
+function triggerSearch() {
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Running...';
+    btn.disabled = true;
+    
+    fetch('/api/trigger-search', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Manual search initiated! Check the dashboard for new events.');
+        } else {
+            alert('Search failed: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to trigger search');
+    })
+    .finally(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+}
+</script>
+{% endblock %}
