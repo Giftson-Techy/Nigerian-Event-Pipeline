@@ -474,12 +474,12 @@ class SearchScraper:
                 # Bing search
                 bing_events = self.scrape_bing_search(query)
                 all_events.extend(bing_events)
-            
-            # Rate limiting
-            time.sleep(self.delay)
-            
-            if len(all_events) >= self.max_events:
-                break
+                
+                # Rate limiting
+                time.sleep(self.delay)
+                
+                if len(all_events) >= self.max_events:
+                    break
         
         # Remove duplicates based on URL
         unique_events = []
