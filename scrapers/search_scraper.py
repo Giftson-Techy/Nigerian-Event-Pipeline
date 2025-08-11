@@ -421,25 +421,59 @@ class SearchScraper:
         return 'General'
     
     def scrape_all(self) -> List[Dict]:
-        """Scrape all search engines for events"""
+        """Scrape all search engines for events using prioritized queries"""
         all_events = []
         
         current_country = self.get_current_country()
         logger.info(f"Starting search engine scraping for {current_country}...")
         
-        # Use country-specific queries
-        queries_to_use = self.event_queries[:8]  # Limit to 8 queries
-        
-        for query in queries_to_use:
-            logger.info(f"Searching for: {query}")
+        # Import prioritized query manager
+        try:
+            from utils.prioritized_queries import query_manager
             
-            # Google search
-            google_events = self.scrape_google_search(query)
-            all_events.extend(google_events)
+            # Get prioritized queries with smart quota management
+            prioritized_queries = query_manager.get_comprehensive_queries(max_calls=15)
             
-            # Bing search
-            bing_events = self.scrape_bing_search(query)
-            all_events.extend(bing_events)
+            logger.info(f"🎯 Using {len(prioritized_queries)} prioritized queries")
+            
+            for query_obj in prioritized_queries:
+                query = query_obj['query']
+                priority = query_obj['priority']
+                
+                logger.info(f"🔍 {priority.upper()}: {query}")
+                
+                # Google search using API
+                google_events = self.scrape_google_search(query)
+                if google_events:
+                    # Tag events with priority and source
+                    for event in google_events:
+                        event['priority'] = priority
+                        event['source'] = 'Google Search'
+                    all_events.extend(google_events)
+                
+                # Small delay between queries
+                time.sleep(0.5)
+                
+                # Break if we have enough events
+                if len(all_events) > 100:
+                    logger.info(f"✅ Found {len(all_events)} events, stopping search")
+                    break
+                    
+        except ImportError:
+            logger.warning("Prioritized queries not available, using fallback queries")
+            # Fallback to basic queries
+            queries_to_use = self.event_queries[:8]  # Limit to 8 queries
+            
+            for query in queries_to_use:
+                logger.info(f"Searching for: {query}")
+                
+                # Google search
+                google_events = self.scrape_google_search(query)
+                all_events.extend(google_events)
+                
+                # Bing search
+                bing_events = self.scrape_bing_search(query)
+                all_events.extend(bing_events)
             
             # Rate limiting
             time.sleep(self.delay)
