@@ -432,7 +432,7 @@ class SearchScraper:
             from utils.prioritized_queries import query_manager
             
             # Get prioritized queries with smart quota management
-            prioritized_queries = query_manager.get_comprehensive_queries(max_calls=15)
+            prioritized_queries = query_manager.get_comprehensive_queries(max_calls=25)
             
             logger.info(f"🎯 Using {len(prioritized_queries)} prioritized queries")
             
